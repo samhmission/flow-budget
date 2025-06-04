@@ -1,4 +1,4 @@
-import { nextJsConfig } from "@flow-budget/eslint-config/next-js";
+import { expoConfig } from "@flow-budget/eslint-config/expo.js";
 
 /** @type {import("eslint").Linter.Config} */
 export default nextJsConfig;
