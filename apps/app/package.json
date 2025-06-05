@@ -2,6 +2,7 @@
   "name": "app",
   "main": "expo-router/entry",
   "version": "1.0.0",
+  "type": "module",
   "scripts": {
     "dev": "expo start --dev-client --web",
     "start": "expo start",

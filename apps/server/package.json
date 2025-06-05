@@ -3,7 +3,8 @@
   "type": "module",
   "scripts": {
     "dev": "tsx watch src/server.ts",
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "eslint . --max-warnings 0"
   },
   "devDependencies": {
     "@flow-budget/typescript-config": "workspace:*",
