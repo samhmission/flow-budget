@@ -1,15 +1,12 @@
 import { ExpoConfig, ConfigContext } from 'expo/config';
 import { AppExtraConfig } from './appConfigTypes';
 
-export default ({ config }: ConfigContext): ExpoConfig => {
+export default ({ config }: ConfigContext) => {
+    console.log(process.env.API_URL);
   const extraConfig: AppExtraConfig = {
     apiUrl: process.env.API_URL || 'https://api.flowbudget.com',
   };
 
-  return {
-    ...config,
-    slug: config.slug ?? 'flow-budget',
-    name: config.name ?? 'Flow Budget',
-    extra: extraConfig
-  };
+  config.extra = extraConfig;
+  return config
 };

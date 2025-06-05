@@ -8,9 +8,35 @@ import { ThemedView } from '@/components/ThemedView';
 import { useEffect, useState } from 'react';
 import Constants from 'expo-constants';
 
+export interface Budget {
+  [key: string]: number
+}
+
 export default function HomeScreen() {
-  const [budget, setBudget] = useState([]);
-  const apiURL = Constants.expoConfig.extra.apiUrl
+  const [budget, setBudget] = useState<Budget>({});
+  const apiURL = Constants.expoConfig.extra.apiUrl;
+   console.log('Constants:', Constants);
+  console.log('expoConfig:', Constants.expoConfig);
+  console.log('extra:', Constants.expoConfig?.extra);
+  
+
+  useEffect(() => {
+    const fetchBudget = async () => {
+      try {
+
+        const response = await fetch(`${apiURL}/budget`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data: Budget = await response.json();
+        setBudget(data);
+      } catch (error) {
+        console.error('Failed to fetch budget:', error);
+      }
+    };
+    
+    fetchBudget();
+  }, []);
 
 
 
@@ -31,7 +57,7 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Step 1: Try it</ThemedText>
         <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
+          Budget: {budget.april} in April, {budget.may} in May, {budget.june} in June
           Press{' '}
           <ThemedText type="defaultSemiBold">
             {Platform.select({
