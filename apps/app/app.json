@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "Flow Budget",
+    "slug": "flow-budget",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
