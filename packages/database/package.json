@@ -1,0 +1,19 @@
+{
+  "name": "@flow-budget/database",
+  "description": "Database package for Flow Budget",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "vitest run ."
+  },
+  "dependencies": {
+    "kysely": "^0.28.2",
+    "pg": "^8.16.0"
+  },
+  "devDependencies": {
+    "@flow-budget/typescript-config": "workspace:*",
+    "@types/pg": "^8.15.4",
+    "vitest": "^3.2.1"
+  }
+}
