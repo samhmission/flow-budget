@@ -1,0 +1,17 @@
+{
+  "name": "@flow-budget/server",
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc"
+  },
+  "devDependencies": {
+    "@flow-budget/typescript-config": "workspace:*",
+    "@types/express": "^5.0.2",
+    "tsx": "^4.19.4",
+    "typescript": "latest"
+  },
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
