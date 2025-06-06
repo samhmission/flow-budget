@@ -4,5 +4,8 @@
     "**/*.ts",
     "**/*.tsx",
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "dist", "build", "coverage", "test", "tests", "e2e", "e2e-tests"],
+  "compilerOptions": {
+    "outDir": "./dist"
+  }
 }

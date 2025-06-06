@@ -15,7 +15,7 @@ export interface Budget {
 export default function HomeScreen() {
   const [budget, setBudget] = useState<Budget>({});
   const apiURL = Constants.expoConfig.extra.apiUrl;
-   console.log('Constants:', Constants);
+  console.log('Constants:', Constants);
   console.log('expoConfig:', Constants.expoConfig);
   console.log('extra:', Constants.expoConfig?.extra);
   
@@ -24,7 +24,7 @@ export default function HomeScreen() {
     const fetchBudget = async () => {
       try {
 
-        const response = await fetch(`${apiURL}/budget`);
+        const response = await fetch(`${apiURL}/person`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }

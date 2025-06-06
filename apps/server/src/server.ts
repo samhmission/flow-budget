@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import { Person } from "@flow-budget/database";
+import { createPerson, findPeople } from "@flow-budget/database/personRepository";
 
 const app = express();
 const port = 3000;
@@ -14,7 +14,13 @@ app.get("/budget", (req: express.Request, res: express.Response) => {
 
 app.get("/person", (req: express.Request, res: express.Response) => {
   console.log("Received request for person data");
-  res.json({});
+  createPerson({
+    first_name: "John",
+    last_name: "Doe",
+    gender: "man",
+    metadata: ""
+  })
+  res.json(findPeople({first_name: "John"}));
 });
 
 app.listen(port, () => {

@@ -4,8 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "private": true,
+  "exports": {
+    "./personRepository": "./dist/personRepository.js"
+  },
   "scripts": {
-    "test": "vitest run ."
+    "test": "vitest run .",
+    "build": "tsc --build"
   },
   "dependencies": {
     "kysely": "^0.28.2",
