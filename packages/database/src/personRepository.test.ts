@@ -22,9 +22,6 @@ describe("PersonRepository", () => {
     await sql`truncate table ${sql.table("person")}`.execute(db);
   });
 
-  afterAll(async () => {
-    await db.schema.dropTable("person").execute();
-  });
 
   it("should find a person with a given id", async () => {
     await PersonRepository.findPersonById(123);
