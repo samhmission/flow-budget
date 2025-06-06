@@ -8,13 +8,14 @@
   },
   "devDependencies": {
     "@flow-budget/typescript-config": "workspace:*",
+    "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
     "tsx": "^4.19.4",
     "typescript": "latest"
   },
   "dependencies": {
+    "@flow-budget/database": "workspace:*",
     "cors": "^2.8.5",
-    "express": "^5.1.0",
-    "@flow-budget/database": "workspace:*"
+    "express": "^5.1.0"
   }
 }
