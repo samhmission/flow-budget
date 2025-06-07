@@ -7,13 +7,10 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useEffect, useState } from "react";
 import Constants from "expo-constants";
-
-export interface Budget {
-  [key: string]: number;
-}
+import type { BudgetItem } from "@flow-budget/api-types";
 
 export default function HomeScreen() {
-  const [budget, setBudget] = useState<Budget>({});
+  const [budgetItem, setBudgetItem] = useState<BudgetItem>();
   const apiURL = Constants.expoConfig.extra.apiUrl;
   console.log("Constants:", Constants);
   console.log("expoConfig:", Constants.expoConfig);
@@ -26,8 +23,8 @@ export default function HomeScreen() {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data: Budget = await response.json();
-        setBudget(data);
+        const data: BudgetItem[] = await response.json();
+        setBudgetItem(data[0]);
       } catch (error) {
         console.error("Failed to fetch budget:", error);
       }
@@ -51,38 +48,14 @@ export default function HomeScreen() {
         <HelloWave />
       </ThemedView>
       <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Budget: {budget.april} in April, {budget.may} in May, {budget.june} in
-          June Press{" "}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: "cmd + d",
-              android: "cmd + m",
-              web: "F12",
-            })}
-          </ThemedText>{" "}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          {`Tap the Explore tab to learn more about what's included in this starter app.`}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          {`When you're ready, run `}
-          <ThemedText type="defaultSemiBold">
-            npm run reset-project
-          </ThemedText>{" "}
-          to get a fresh <ThemedText type="defaultSemiBold">app</ThemedText>{" "}
-          directory. This will move the current{" "}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{" "}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
+        {!budgetItem ? (
+          <ThemedText>Loading budget item...</ThemedText>
+        ) : (
+          <ThemedText>
+            Budget Item: {budgetItem.id} - {budgetItem.category} -{" "}
+            {budgetItem.amount}
+          </ThemedText>
+        )}
       </ThemedView>
     </ParallaxScrollView>
   );
