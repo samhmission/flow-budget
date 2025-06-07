@@ -5,7 +5,7 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./personRepository": "./dist/personRepository.js"
+    "./budgetItemRepository": "./dist/budgetItemRepository.js"
   },
   "scripts": {
     "test": "vitest run .",
