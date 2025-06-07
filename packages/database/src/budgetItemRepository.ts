@@ -15,6 +15,7 @@ export async function findBudgetItemById(id: string) {
 }
 
 export async function findBudgetItem(criteria: BudgetItemFilters) {
+  console.log("Finding budget item with criteria:", criteria);
   let query = db.selectFrom("budgetItems");
 
   if (criteria.id) {

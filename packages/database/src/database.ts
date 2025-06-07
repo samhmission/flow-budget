@@ -1,17 +1,13 @@
 import { Database } from "./types.js"; // this is the Database interface we defined earlier
-import { Pool } from "pg";
-import { Kysely, PostgresDialect } from "kysely";
+import { Kysely } from "kysely";
+import { createDialect } from "./config.js";
 
-const dialect = new PostgresDialect({
-  pool: new Pool({
-    database: "flow-budget-dev",
-    host: "127.0.0.1",
-    user: "admin", // This is a test database, so we use a simple user.
-    port: 5434,
-    password: "dev", // This is a test database, so we use a simple password.
-    max: 10,
-  }),
-});
+// Default to development environment if not specified
+const env = (process.env.NODE_ENV || "development") as
+  | "development"
+  | "test"
+  | "production";
+export const dialect = createDialect(env);
 
 // Database interface is passed to Kysely's constructor, and from now on, Kysely
 // knows your database structure.

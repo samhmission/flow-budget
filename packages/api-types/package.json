@@ -1,0 +1,9 @@
+{
+  "name": "@flow-budget/api-types",
+  "description": "Database package for Flow Budget",
+  "version": "0.0.0",
+  "type": "module",
+  "private": true,
+  "main": "./src/budgetItem.ts",
+  "types": "./src/budgetItem.ts"
+}

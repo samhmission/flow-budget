@@ -5,12 +5,17 @@
   "type": "module",
   "private": true,
   "exports": {
-    "./budgetItemRepository": "./dist/budgetItemRepository.js"
+    "./budgetItemRepository": "./dist/budgetItemRepository.js",
+    "./types": "./dist/types.js"
   },
   "scripts": {
     "test": "vitest run .",
     "build": "tsc --build",
-    "clean": "rm -rf dist .turbo node_modules"
+    "clean": "rm -rf dist .turbo node_modules",
+    "migrate:dev": "tsx ./src/migrator.ts latest development",
+    "migrate:test": "tsx ./src/migrator.ts latest test",
+    "migrate:prod": "tsx ./src/migrator.ts latest production",
+    "migrate:info": "tsx ./src/migrator.ts info"
   },
   "dependencies": {
     "kysely": "^0.28.2",
@@ -19,6 +24,8 @@
   "devDependencies": {
     "@flow-budget/typescript-config": "workspace:*",
     "@types/pg": "^8.15.4",
+    "kysely-ctl": "^0.13.1",
+    "tsx": "^4.19.4",
     "vitest": "^3.2.1"
   }
 }

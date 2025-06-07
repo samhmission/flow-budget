@@ -17,12 +17,18 @@ app.get("/budget", async (req: express.Request, res: express.Response) => {
 
 app.get("/budgetItem", async (req: express.Request, res: express.Response) => {
   console.log("Received request for budgetItem data");
-  createBudgetItem({
+  const randomId = Math.floor(Math.random() * 1000).toString();
+  console.log(`Generated random ID: ${randomId}`);
+  const budgeItemId = `budgetItem-${randomId}`;
+  await createBudgetItem({
+    id: budgeItemId,
     category: "food",
     amount: -100,
-    metadata: "",
+    description: "Groceries and dining out",
   });
-  res.json(await findBudgetItem({ category: "food" }));
+  const result = await findBudgetItem({ category: "food" });
+  console.log(result);
+  res.json(result);
 });
 
 app.listen(port, () => {

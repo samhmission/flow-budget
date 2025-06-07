@@ -12,7 +12,6 @@ describe("BudgetItemRepository", () => {
       .addColumn("first_name", "varchar", (cb) => cb.notNull())
       .addColumn("last_name", "varchar")
       .addColumn("gender", "varchar(50)", (cb) => cb.notNull())
-      .addColumn("metadata", "text", (cb) => cb.notNull())
       .addColumn("created_at", "timestamp", (cb) =>
         cb.notNull().defaultTo(sql`now()`)
       )
@@ -39,7 +38,7 @@ describe("BudgetItemRepository", () => {
     const result = await BudgetItemRepository.createBudgetItem({
       category: "Internet",
       amount: -100,
-      metadata: "{}",
+      description: "",
     });
     expect(result).toHaveProperty("id");
   });
