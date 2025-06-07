@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "lint": "eslint . --max-warnings 0"
+    "lint": "eslint . --max-warnings 0",
+    "clean": "rm -rf dist node_modules .turbo"
   },
   "devDependencies": {
     "@flow-budget/typescript-config": "workspace:*",
