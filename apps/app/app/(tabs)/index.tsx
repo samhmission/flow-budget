@@ -1,17 +1,19 @@
 import { Image } from "expo-image";
-import { Platform, StyleSheet } from "react-native";
-
+import { Platform, StyleSheet, Button, TextInput } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useEffect, useState } from "react";
 import Constants from "expo-constants";
-import type { BudgetItem } from "@flow-budget/api-types";
+import BudgetItemList from "@/components/ui/budgetItemList";
 
+import type { BudgetItem } from "@flow-budget/api-types";
 export default function HomeScreen() {
   const [budgetItem, setBudgetItem] = useState<BudgetItem>();
   const apiURL = Constants.expoConfig.extra.apiUrl;
+
   console.log("Constants:", Constants);
   console.log("expoConfig:", Constants.expoConfig);
   console.log("extra:", Constants.expoConfig?.extra);
@@ -56,6 +58,7 @@ export default function HomeScreen() {
             {budgetItem.amount}
           </ThemedText>
         )}
+        <BudgetItemList />
       </ThemedView>
     </ParallaxScrollView>
   );
