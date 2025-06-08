@@ -1,13 +1,11 @@
 import { Image } from "expo-image";
 import { Platform, StyleSheet, Button, TextInput } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import { HelloWave } from "@/components/HelloWave";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useEffect, useState } from "react";
 import Constants from "expo-constants";
-import BudgetItemList from "@/components/ui/budgetItemList";
+import BudgetItemList from "@/components/ui/BudgetItemList";
 
 import type { BudgetItem } from "@flow-budget/api-types";
 export default function HomeScreen() {
@@ -39,25 +37,10 @@ export default function HomeScreen() {
     <ParallaxScrollView
       headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
       headerImage={
-        <Image
-          source={require("@/assets/images/partial-react-logo.png")}
-          style={styles.reactLogo}
-        />
+        <Image source={require("@/assets/images/partial-react-logo.png")} />
       }
     >
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        {!budgetItem ? (
-          <ThemedText>Loading budget item...</ThemedText>
-        ) : (
-          <ThemedText>
-            Budget Item: {budgetItem.id} - {budgetItem.category} -{" "}
-            {budgetItem.amount}
-          </ThemedText>
-        )}
+      <ThemedView style={styles.budgetItemContainer}>
         <BudgetItemList />
       </ThemedView>
     </ParallaxScrollView>
@@ -70,15 +53,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 8,
   },
-  stepContainer: {
+  budgetItemContainer: {
     gap: 8,
     marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: "absolute",
   },
 });
