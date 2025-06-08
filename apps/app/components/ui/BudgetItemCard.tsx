@@ -2,17 +2,29 @@ import { Button } from "@react-navigation/elements";
 import Constants from "expo-constants";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 function BudgetItemCard({
   item: { id, category, amount },
 }: {
   item: { id: string; category: string; amount: number };
 }) {
+  const queryClient = useQueryClient();
+  // Mutations
+  const mutation = useMutation({
+    mutationFn: deleteBudgetItem,
+    onSuccess: () => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["budgetItems"] });
+    },
+  });
   return (
     <View key={id} style={styles.budgetItem}>
-      <Text style={styles.budgetItemName}>{category}</Text>
+      <Text style={styles.budgetItemText}>{category}</Text>
       <Text style={styles.budgetItemAmount}>${amount.toFixed(2)}</Text>
-      <Button onPress={() => deleteBudgetItem(id)} style={styles.deleteButton}>
+      <Text style={styles.budgetItemText}>{id}</Text>
+      {/* Delete button */}
+      <Button onPress={() => mutation.mutate(id)} style={styles.deleteButton}>
         X
       </Button>
     </View>
@@ -58,7 +70,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 3,
   },
-  budgetItemName: {
+  budgetItemText: {
     fontSize: 16,
     fontWeight: "600",
     color: "#333333",
