@@ -3,6 +3,8 @@ import cors from "cors";
 import {
   deleteBudgetItem,
   findBudgetItem,
+  findBudgetItemById,
+  updateBudgetItem,
 } from "@flow-budget/database/budgetItemRepository";
 
 const app = express();
@@ -16,10 +18,35 @@ app.get("/budget", async (req: express.Request, res: express.Response) => {
 });
 
 app.get("/budgetItem", async (req: express.Request, res: express.Response) => {
-  console.log("Received request for budgetItem data");
-  const result = await findBudgetItem({ category: "food" });
+  console.log("Received request for all budgetItem data");
+  // Fetch all budget items
+  const result = await findBudgetItem({});
+  console.log("Returning budget items:", result);
   res.json(result);
 });
+
+app.get(
+  "/budgetItem/:id",
+  async (req: express.Request, res: express.Response) => {
+    const id = req.params.id;
+    console.log(`Received request for budget item with ID: ${id}`);
+
+    if (!id) {
+      res.status(400).json({ message: "ID is required" });
+      return;
+    }
+
+    const result = await findBudgetItemById(id);
+
+    if (!result) {
+      res.status(404).json({ message: "Budget item not found" });
+      return;
+    }
+
+    console.log(`Found budget item:`, result);
+    res.json(result);
+  }
+);
 
 app.delete(
   "/budgetItem/:id",
@@ -36,6 +63,39 @@ app.delete(
       res.status(200).json({ message: "Budget item deleted successfully" });
     } else {
       res.status(404).json({ message: "Budget item not found" });
+    }
+  }
+);
+
+app.put(
+  "/budgetItem/:id",
+  express.json(),
+  async (req: express.Request, res: express.Response) => {
+    const id = req.params.id;
+    const { category, amount } = req.body;
+    console.log(`Received request to update budget item with ID: ${id}`, {
+      category,
+      amount,
+    });
+
+    if (!id) {
+      res.status(400).json({ message: "ID is required" });
+      return;
+    }
+
+    try {
+      await updateBudgetItem(id, { category, amount });
+      res.status(200).json({
+        message: "Budget item updated successfully",
+        id,
+        category,
+        amount,
+      });
+    } catch (error) {
+      console.error("Error updating budget item:", error);
+      res
+        .status(500)
+        .json({ message: "Error updating budget item", error: String(error) });
     }
   }
 );

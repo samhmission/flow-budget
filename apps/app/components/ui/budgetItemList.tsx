@@ -8,6 +8,9 @@ function BudgetItemList() {
   const query = useQuery({
     queryKey: ["budgetItems"],
     queryFn: getBudgetItemList,
+    staleTime: 0, // Data is always considered stale immediately
+    refetchOnMount: true, // Always refetch when the component mounts
+    refetchOnWindowFocus: true, // Refetch when the window regains focus
   });
 
   const budgetItems = query.data || [];
@@ -29,15 +32,28 @@ const getBudgetItemList = async (): Promise<BudgetItem[]> => {
     throw new Error("API URL is not defined in environment variables");
   }
   console.log("Fetching budget items from:", apiURL);
-  const response = await fetch(apiURL + "/budgetItem");
 
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
+  try {
+    // Add timestamp to prevent caching by the browser or network
+    const timestamp = new Date().getTime();
+    const response = await fetch(`${apiURL}/budgetItem?_t=${timestamp}`);
+
+    if (!response.ok) {
+      console.error(
+        "Network response was not ok:",
+        response.status,
+        response.statusText
+      );
+      throw new Error("Network response was not ok");
+    }
+
+    const data: BudgetItem[] = await response.json();
+    console.log("Fetched budget items:", data);
+    return data;
+  } catch (error) {
+    console.error("Error fetching budget items:", error);
+    throw error;
   }
-
-  const data: BudgetItem[] = await response.json();
-  console.log("data:", data);
-  return data;
 };
 
 const styles = StyleSheet.create({
