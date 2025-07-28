@@ -46,5 +46,15 @@ describe("BudgetItemRepository", () => {
   it("should delete a budgetItem with a given id", async () => {
     await BudgetItemRepository.deleteBudgetItem("123");
   });
+
+  it("should store amount as a decimal", async () => {
+    const result = await BudgetItemRepository.createBudgetItem({
+      category: "Utilities",
+      amount: 150.75,
+      description: "Monthly utilities bill",
+    });
+    expect(result).toHaveProperty("amount");
+    expect(result.amount).toBeCloseTo(150.75, 2);
+  });
 });
 // This test suite uses Vitest to test the BudgetItemRepository functions.
