@@ -20,7 +20,6 @@ function BudgetItemCard({
   const [editedCategory, setEditedCategory] = useState(category);
   const [editedAmount, setEditedAmount] = useState(amount.toString());
 
-  // Delete mutation
   const deleteMutation = useMutation({
     mutationFn: deleteBudgetItem,
     onSuccess: () => {
@@ -28,7 +27,6 @@ function BudgetItemCard({
     },
   });
 
-  // Update mutation
   const updateMutation = useMutation({
     mutationFn: (data: { id: string; category: string; amount: number }) =>
       updateBudgetItem(data),
@@ -100,7 +98,7 @@ function BudgetItemCard({
           <TextInput
             value={editedAmount}
             onChangeText={setEditedAmount}
-            keyboardType="numeric"
+            keyboardType="decimal-pad"
             style={styles.input}
           />
 
@@ -218,7 +216,7 @@ const styles = StyleSheet.create({
   budgetItemAmount: {
     fontSize: 16,
     fontWeight: "700",
-    color: "#2E7D32", // A green color for money
+    color: "#2E7D32",
   },
   deleteButton: {
     backgroundColor: "#FFFFFF",
