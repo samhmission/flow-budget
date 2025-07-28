@@ -14,10 +14,10 @@ export const dialect = createDialect(env);
 // knows your database structure.
 // Dialect is passed to Kysely's constructor, and from now on, Kysely knows how
 // to communicate with your database.
-const int8TypeId = 1700; // PostgreSQL's int8 type ID
-console.log("int8TypeId:", int8TypeId);
-pg.types.setTypeParser(int8TypeId, (value: string) => {
-  return parseInt(value, 10);
+const numericTypeId = 1700; // PostgreSQL's NUMERIC/DECIMAL type ID
+console.log("numericTypeId:", numericTypeId);
+pg.types.setTypeParser(numericTypeId, (value: string) => {
+  return parseFloat(value);
 });
 export const db = new Kysely<Database>({
   dialect,
