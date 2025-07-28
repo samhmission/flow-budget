@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
+import { randomUUID } from "crypto";
 import {
+  createBudgetItem,
   deleteBudgetItem,
   findBudgetItem,
   findBudgetItemById,
@@ -19,7 +21,7 @@ app.get("/budget", async (req: express.Request, res: express.Response) => {
 
 app.get("/budgetItem", async (req: express.Request, res: express.Response) => {
   console.log("Received request for all budgetItem data");
-  // Fetch all budget items
+
   const result = await findBudgetItem({});
   console.log("Returning budget items:", result);
   res.json(result);
@@ -96,6 +98,44 @@ app.put(
       res
         .status(500)
         .json({ message: "Error updating budget item", error: String(error) });
+    }
+  }
+);
+
+app.post(
+  "/budgetItem",
+  express.json(),
+  async (req: express.Request, res: express.Response) => {
+    const { category, amount, description } = req.body;
+    console.log("Received request to create budget item:", {
+      category,
+      amount,
+      description,
+    });
+
+    if (!category || amount === undefined) {
+      res.status(400).json({ message: "Category and amount are required" });
+      return;
+    }
+
+    try {
+      const id = randomUUID();
+      const newItem = await createBudgetItem({
+        id,
+        category,
+        amount,
+        description: description || "",
+      });
+
+      res.status(201).json({
+        message: "Budget item created successfully",
+        item: newItem,
+      });
+    } catch (error) {
+      console.error("Error creating budget item:", error);
+      res
+        .status(500)
+        .json({ message: "Error creating budget item", error: String(error) });
     }
   }
 );

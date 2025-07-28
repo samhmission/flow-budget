@@ -8,6 +8,7 @@ import Constants from "expo-constants";
 import BudgetItemList from "@/components/ui/BudgetItemList";
 
 import type { BudgetItem } from "@flow-budget/api-types";
+import CreateBudgetItemForm from "@/components/ui/CreateBudgetItemForm";
 export default function HomeScreen() {
   const [budgetItem, setBudgetItem] = useState<BudgetItem>();
   const apiURL = Constants.expoConfig.extra.apiUrl;
@@ -41,6 +42,7 @@ export default function HomeScreen() {
       }
     >
       <ThemedView style={styles.budgetItemContainer}>
+        <CreateBudgetItemForm />
         <BudgetItemList />
       </ThemedView>
     </ParallaxScrollView>
