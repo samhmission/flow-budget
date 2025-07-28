@@ -9,6 +9,7 @@
     "./types": "./dist/types.js"
   },
   "scripts": {
+    "setup:test-db": "tsx ./src/setup-test-db.ts",
     "test": "vitest run .",
     "build": "tsc --build",
     "clean": "rm -rf dist .turbo node_modules",
