@@ -129,8 +129,6 @@ async function main() {
   }
 }
 
-// Use fileURLToPath imported at the top
-
 // Run if this file is executed directly
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
