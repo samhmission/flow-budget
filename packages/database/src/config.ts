@@ -22,9 +22,9 @@ const configs: Record<Environment, DbConfig> = {
     max: 10,
   },
   test: {
-    database: "flow-budget-test",
+    database: "flow-budget-dev",
     host: "127.0.0.1",
-    user: "admin",
+    user: "postgres",
     port: 5434,
     password: "dev",
     max: 10,
