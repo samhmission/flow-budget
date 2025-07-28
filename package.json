@@ -7,7 +7,8 @@
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
-    "clean": "turbo run clean && rm -rf node_modules .turbo && pnpm store prune"
+    "clean": "turbo run clean && rm -rf node_modules .turbo && pnpm store prune",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "prettier": "^3.5.3",
