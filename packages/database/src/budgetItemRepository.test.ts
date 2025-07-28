@@ -7,10 +7,10 @@ import { randomUUID } from "crypto";
 // TODO: update comments to match the new table structure
 describe("BudgetItemRepository", () => {
   beforeAll(async () => {
-    await db.schema.dropTable("budgetItem").ifExists().execute();
+    await db.schema.dropTable("budgetItems").ifExists().execute();
 
     await db.schema
-      .createTable("budgetItem")
+      .createTable("budgetItems")
       .addColumn("id", "uuid", (cb) => cb.primaryKey())
       .addColumn("category", "varchar", (cb) => cb.notNull())
       .addColumn("amount", "numeric", (cb) => cb.notNull())
@@ -25,14 +25,14 @@ describe("BudgetItemRepository", () => {
   });
 
   afterAll(async () => {
-    await db.schema.dropTable("budgetItem").ifExists().execute();
+    await db.schema.dropTable("budgetItems").ifExists().execute();
   });
 
   afterEach(async () => {
-    await sql`truncate table ${sql.table("budgetItem")}`.execute(db);
+    await sql`truncate table ${sql.table("budgetItems")}`.execute(db);
   });
 
-  it("should find a budgetItem with a given id", async () => {
+  it("should find a budgetItems with a given id", async () => {
     const testId = randomUUID();
     await BudgetItemRepository.createBudgetItem({
       id: testId,
@@ -91,7 +91,6 @@ describe("BudgetItemRepository", () => {
   });
 
   it("should delete a budgetItem with a given id", async () => {
-    await BudgetItemRepository.deleteBudgetItem("123");
     const testId = randomUUID();
     await BudgetItemRepository.createBudgetItem({
       id: testId,
