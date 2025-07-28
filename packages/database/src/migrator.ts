@@ -15,7 +15,9 @@ type MigrateOptions = {
   command: "up" | "down" | "latest" | "info";
   migrationCount?: number;
 };
-const __dirname = import.meta.dirname;
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 export async function runMigration(
   options: MigrateOptions
