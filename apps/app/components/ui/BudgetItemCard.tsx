@@ -212,11 +212,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     color: "#333333",
+    flex: 1,
   },
   budgetItemAmount: {
     fontSize: 16,
     fontWeight: "700",
     color: "#2E7D32",
+    flex: 1,
+    textAlign: "center",
   },
   deleteButton: {
     backgroundColor: "#FFFFFF",
@@ -227,6 +230,8 @@ const styles = StyleSheet.create({
   buttonContainer: {
     flexDirection: "row",
     alignItems: "center",
+    flex: 1,
+    justifyContent: "flex-end",
   },
   actionButton: {
     marginRight: 8,

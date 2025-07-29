@@ -291,9 +291,9 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
+    gap: 16,
   },
   title: {
-    marginBottom: 16,
     fontSize: 18,
     fontWeight: "700",
     color: "#333333",
