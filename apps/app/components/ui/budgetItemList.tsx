@@ -15,15 +15,13 @@ function BudgetItemList() {
 
   const budgetItems = query.data || [];
 
-  const myScrollView = () => (
+  return (
     <ScrollView style={styles.container}>
       {budgetItems.map((item) => (
         <BudgetItemCard key={item.id} item={item} />
       ))}
     </ScrollView>
   );
-
-  return <View style={styles.container}>{myScrollView()}</View>;
 }
 
 const getBudgetItemList = async (): Promise<BudgetItem[]> => {
@@ -60,7 +58,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    backgroundColor: "#f8f9fa",
+    backgroundColor: "transparent",
   },
 });
 
