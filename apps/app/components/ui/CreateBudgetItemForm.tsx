@@ -14,6 +14,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Constants from "expo-constants";
 
 const CreateBudgetItemForm = () => {
+  const [showInputs, setShowInputs] = useState(true);
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
@@ -101,111 +102,123 @@ const CreateBudgetItemForm = () => {
       style={{ width: "100%" }}
     >
       <View style={styles.container}>
-        <Text style={styles.title}>Add New Budget Item</Text>
+        <TouchableOpacity onPress={() => setShowInputs((prev) => !prev)}>
+          <Text style={styles.title}>
+            Add New Budget Item {showInputs ? "▲" : "▼"}
+          </Text>
+        </TouchableOpacity>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Category</Text>
-          <TextInput
-            style={[
-              styles.input,
-              formErrors.category ? styles.inputError : null,
-            ]}
-            value={category}
-            onChangeText={(text) => {
-              setCategory(text);
-              if (formErrors.category) {
-                setFormErrors({ ...formErrors, category: undefined });
-              }
-            }}
-            placeholder="e.g., Food, Transport, Salary"
-          />
-          {formErrors.category ? (
-            <Text style={styles.errorText}>{formErrors.category}</Text>
-          ) : null}
-        </View>
+        {showInputs && (
+          <View style={styles.inputContainerGroup}>
+            {" "}
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Category</Text>
+              <TextInput
+                style={[
+                  styles.input,
+                  formErrors.category ? styles.inputError : null,
+                ]}
+                value={category}
+                onChangeText={(text) => {
+                  setCategory(text);
+                  if (formErrors.category) {
+                    setFormErrors({ ...formErrors, category: undefined });
+                  }
+                }}
+                placeholder="e.g., Food, Transport, Salary"
+              />
+              {formErrors.category ? (
+                <Text style={styles.errorText}>{formErrors.category}</Text>
+              ) : null}
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Amount</Text>
+              <TextInput
+                style={[
+                  styles.input,
+                  formErrors.amount ? styles.inputError : null,
+                ]}
+                value={amount}
+                onChangeText={(text) => {
+                  setAmount(text);
+                  if (formErrors.amount) {
+                    setFormErrors({ ...formErrors, amount: undefined });
+                  }
+                }}
+                placeholder="0.00"
+                keyboardType="decimal-pad"
+              />
+              {formErrors.amount ? (
+                <Text style={styles.errorText}>{formErrors.amount}</Text>
+              ) : null}
+            </View>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Description (Optional)</Text>
+              <TextInput
+                style={styles.input}
+                value={description}
+                onChangeText={setDescription}
+                placeholder="Add details about this item"
+                multiline={true}
+                numberOfLines={3}
+                textAlignVertical="top"
+              />
+            </View>
+            <View style={styles.typeContainer}>
+              <TouchableOpacity
+                style={[
+                  styles.typeButton,
+                  isExpense ? styles.activeButton : styles.inactiveButton,
+                ]}
+                onPress={() => setIsExpense(true)}
+              >
+                <Text
+                  style={isExpense ? styles.activeText : styles.inactiveText}
+                >
+                  Expense
+                </Text>
+              </TouchableOpacity>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Amount</Text>
-          <TextInput
-            style={[styles.input, formErrors.amount ? styles.inputError : null]}
-            value={amount}
-            onChangeText={(text) => {
-              setAmount(text);
-              if (formErrors.amount) {
-                setFormErrors({ ...formErrors, amount: undefined });
-              }
-            }}
-            placeholder="0.00"
-            keyboardType="decimal-pad"
-          />
-          {formErrors.amount ? (
-            <Text style={styles.errorText}>{formErrors.amount}</Text>
-          ) : null}
-        </View>
+              <TouchableOpacity
+                style={[
+                  styles.typeButton,
+                  !isExpense ? styles.activeButton : styles.inactiveButton,
+                ]}
+                onPress={() => setIsExpense(false)}
+              >
+                <Text
+                  style={!isExpense ? styles.activeText : styles.inactiveText}
+                >
+                  Income
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.buttonRow}>
+              <TouchableOpacity
+                style={styles.resetButton}
+                onPress={resetForm}
+                disabled={createMutation.isPending}
+              >
+                <Text style={styles.resetButtonText}>Reset</Text>
+              </TouchableOpacity>
 
-        <View style={styles.inputContainer}>
-          <Text style={styles.label}>Description (Optional)</Text>
-          <TextInput
-            style={styles.input}
-            value={description}
-            onChangeText={setDescription}
-            placeholder="Add details about this item"
-            multiline={true}
-            numberOfLines={3}
-            textAlignVertical="top"
-          />
-        </View>
-
-        <View style={styles.typeContainer}>
-          <TouchableOpacity
-            style={[
-              styles.typeButton,
-              isExpense ? styles.activeButton : styles.inactiveButton,
-            ]}
-            onPress={() => setIsExpense(true)}
-          >
-            <Text style={isExpense ? styles.activeText : styles.inactiveText}>
-              Expense
-            </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.typeButton,
-              !isExpense ? styles.activeButton : styles.inactiveButton,
-            ]}
-            onPress={() => setIsExpense(false)}
-          >
-            <Text style={!isExpense ? styles.activeText : styles.inactiveText}>
-              Income
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.buttonRow}>
-          <TouchableOpacity
-            style={styles.resetButton}
-            onPress={resetForm}
-            disabled={createMutation.isPending}
-          >
-            <Text style={styles.resetButtonText}>Reset</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.submitButton}
-            onPress={handleSubmit}
-            disabled={createMutation.isPending}
-          >
-            {createMutation.isPending ? (
-              <View style={styles.loadingContainer}>
-                <ActivityIndicator color="#fff" size="small" />
-                <Text style={styles.submitButtonText}> Creating...</Text>
-              </View>
-            ) : (
-              <Text style={styles.submitButtonText}>Add Budget Item</Text>
-            )}
-          </TouchableOpacity>
-        </View>
+              <TouchableOpacity
+                style={styles.submitButton}
+                onPress={handleSubmit}
+                disabled={createMutation.isPending}
+              >
+                {createMutation.isPending ? (
+                  <View style={styles.loadingContainer}>
+                    <ActivityIndicator color="#fff" size="small" />
+                    <Text style={styles.submitButtonText}> Creating...</Text>
+                  </View>
+                ) : (
+                  <Text style={styles.submitButtonText}>Add Budget Item</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+        )}
       </View>
     </KeyboardAvoidingView>
   );
@@ -280,11 +293,18 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   title: {
+    marginBottom: 16,
     fontSize: 18,
     fontWeight: "700",
-    marginBottom: 16,
     color: "#333333",
     textAlign: "center",
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  inputContainerGroup: {
+    marginBottom: 16,
   },
   inputContainer: {
     marginBottom: 16,
