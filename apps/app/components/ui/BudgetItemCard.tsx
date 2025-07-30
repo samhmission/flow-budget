@@ -80,12 +80,12 @@ function BudgetItemCard({
             >
               <Text style={styles.editButtonText}>Edit</Text>
             </TouchableOpacity>
-            <Button
+            <TouchableOpacity
               onPress={() => deleteMutation.mutate(id)}
               style={styles.deleteButton}
             >
-              X
-            </Button>
+              <Text style={styles.deleteButtonText}>X</Text>
+            </TouchableOpacity>
           </View>
         </>
       ) : (
@@ -200,7 +200,7 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 20,
     marginVertical: 8,
-    backgroundColor: "#ffffff",
+    backgroundColor: "#f7cf4b",
     borderRadius: 12,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
@@ -222,10 +222,15 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   deleteButton: {
-    backgroundColor: "#FFFFFF",
-    borderRadius: 20,
+    backgroundColor: "#4f1f65",
+    borderRadius: 12,
     padding: 8,
+    minWidth: 50,
+    alignItems: "center",
+  },
+  deleteButtonText: {
     color: "#FF5252",
+    fontWeight: "600",
   },
   buttonContainer: {
     flexDirection: "row",
