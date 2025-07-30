@@ -281,7 +281,7 @@ async function createBudgetItem({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#ffffff",
+    backgroundColor: "#f7cf4b",
     borderRadius: 12,
     padding: 16,
     marginHorizontal: 16,
