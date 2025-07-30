@@ -126,6 +126,7 @@ const CreateBudgetItemForm = () => {
                   }
                 }}
                 placeholder="e.g., Food, Transport, Salary"
+                placeholderTextColor={"#c0abc0"}
               />
               {formErrors.category ? (
                 <Text style={styles.errorText}>{formErrors.category}</Text>
@@ -146,6 +147,7 @@ const CreateBudgetItemForm = () => {
                   }
                 }}
                 placeholder="0.00"
+                placeholderTextColor={"#c0abc0"}
                 keyboardType="decimal-pad"
               />
               {formErrors.amount ? (
@@ -159,6 +161,7 @@ const CreateBudgetItemForm = () => {
                 value={description}
                 onChangeText={setDescription}
                 placeholder="Add details about this item"
+                placeholderTextColor={"#c0abc0"}
                 multiline={true}
                 numberOfLines={3}
                 textAlignVertical="top"
@@ -312,12 +315,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 14,
     marginBottom: 6,
-    color: "#666666",
+    color: "#4f1f65",
     fontWeight: "500",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#e0e0e0",
+    borderColor: "#4f1f65",
     borderRadius: 8,
     paddingHorizontal: 12,
     paddingVertical: 10,
