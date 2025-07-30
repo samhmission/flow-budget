@@ -1,6 +1,5 @@
 import { Image } from "expo-image";
-import { Platform, StyleSheet, Button, TextInput } from "react-native";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import { StyleSheet } from "react-native";
 import ParallaxScrollView from "@/components/ParallaxScrollView";
 import { ThemedView } from "@/components/ThemedView";
 import { useEffect, useState } from "react";
@@ -32,13 +31,20 @@ export default function HomeScreen() {
     };
 
     fetchBudget();
-  }, []);
+  }, [apiURL]);
 
   return (
     <ParallaxScrollView
-      headerBackgroundColor={{ light: "#A1CEDC", dark: "#1D3D47" }}
+      headerBackgroundColor={{ light: "#01042d", dark: "#01042d" }}
       headerImage={
-        <Image source={require("@/assets/images/partial-react-logo.png")} />
+        <Image
+          source={require("@/assets/images/icon.png")}
+          style={styles.headerImage}
+          onError={(error) => console.log("Image load error:", error)}
+          onLoad={() => console.log("Image loaded successfully")}
+          contentFit="contain"
+          placeholder="Loading..."
+        />
       }
     >
       <ThemedView style={styles.budgetItemContainer}>
@@ -58,5 +64,13 @@ const styles = StyleSheet.create({
   budgetItemContainer: {
     gap: 8,
     marginBottom: 8,
+    backgroundColor: "transparent",
+  },
+  headerImage: {
+    width: 500,
+    height: 500,
+    alignSelf: "center",
+    justifyContent: "center",
+    marginTop: -150,
   },
 });
