@@ -4,16 +4,10 @@ export const Theme = {
       borderRadius: 9999,
       width: 550,
       height: 150,
-      shadowColor: "rgba(0, 0, 0, 0.3)",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 1,
-      shadowRadius: 6,
+      boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.3)",
     },
     secondary: {
-      shadowColor: "rgba(0, 0, 0, 0.22)",
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 1,
-      shadowRadius: 4,
+      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.22)",
     },
   },
 
