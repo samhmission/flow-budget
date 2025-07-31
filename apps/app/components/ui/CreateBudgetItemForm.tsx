@@ -14,7 +14,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Constants from "expo-constants";
 
 const CreateBudgetItemForm = () => {
-  const [showInputs, setShowInputs] = useState(true);
+  const [showInputs, setShowInputs] = useState(false);
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
@@ -102,7 +102,9 @@ const CreateBudgetItemForm = () => {
       style={{ width: "100%" }}
     >
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => setShowInputs((prev) => !prev)}>
+        <TouchableOpacity
+          onPress={() => setShowInputs((prev: boolean) => !prev)}
+        >
           <Text style={styles.title}>
             Add New Budget Item {showInputs ? "▲" : "▼"}
           </Text>
@@ -299,7 +301,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontWeight: "700",
-    color: "#333333",
+    color: "#4f1f65",
     textAlign: "center",
     width: "100%",
     display: "flex",
