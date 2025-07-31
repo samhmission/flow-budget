@@ -55,24 +55,4 @@ const styles = StyleSheet.create({
     gap: 24,
     marginVertical: 24,
   },
-  buttonWrapper: {
-    width: 150,
-    height: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    position: "relative",
-  },
-  buttonImage: {
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    top: 0,
-    left: 0,
-  },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#000",
-    zIndex: 1,
-  },
 });
