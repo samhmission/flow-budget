@@ -8,5 +8,6 @@ export default ({ config }: ConfigContext) => {
   };
 
   config.extra = extraConfig;
+  config.plugins = [...(config.plugins || []), "expo-font", "expo-web-browser"];
   return config;
 };
