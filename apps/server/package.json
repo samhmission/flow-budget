@@ -12,7 +12,7 @@
     "@types/cors": "^2.8.18",
     "@types/express": "^5.0.2",
     "tsx": "^4.19.4",
-    "typescript": "latest"
+    "typescript": "5.8.2"
   },
   "dependencies": {
     "@flow-budget/database": "workspace:*",
