@@ -70,4 +70,5 @@ export const Colors = {
   },
 };
 
-export type BrandColors = typeof brandColors;
+// export type ColorScheme = keyof typeof Colors; // TODO type checking / auto completion for colors if needed
+// export type BrandColors = typeof brandColors;
