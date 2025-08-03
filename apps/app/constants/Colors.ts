@@ -34,10 +34,13 @@ export const Colors = {
       primary: {
         background: brandColors.yellow,
         text: brandColors.darkPurple,
+        boxShadow: `6px 6px 6px ${brandColors.darkOrange}ff`,
       },
       secondary: {
         background: brandColors.white,
         text: brandColors.darkPurple,
+        boxShadow: `6px 6px 6px #C08000FF
+`,
       },
     },
   },
@@ -54,10 +57,14 @@ export const Colors = {
       primary: {
         background: brandColors.orange,
         text: brandColors.white,
+        boxShadow: `3px 3px #C08000FF
+`,
       },
       secondary: {
         background: brandColors.lightPink,
         text: brandColors.darkPurple,
+        boxShadow: `3px 3px #C08000FF
+`,
       },
     },
   },

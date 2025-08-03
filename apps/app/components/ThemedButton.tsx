@@ -26,6 +26,7 @@ export function ThemedButton(props: ThemedButtonProps) {
         styles.button,
         {
           backgroundColor: buttonColors.background,
+          boxShadow: buttonColors.boxShadow,
         },
         buttonStyles,
       ]}
@@ -53,8 +54,8 @@ const styles = StyleSheet.create({
     height: "90%",
     width: "95%",
     borderRadius: 9999,
-    borderWidth: 3,
+    borderWidth: 10,
     borderColor: "#FFD700",
-    boxShadow: "-3px -3px 3px rgba(192, 128, 0, 0.4)",
+    boxShadow: `inset -3px -3px  rgba(192, 128, 0, 1)`,
   },
 });

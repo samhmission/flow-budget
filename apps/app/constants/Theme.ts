@@ -4,10 +4,11 @@ export const Theme = {
       borderRadius: 9999,
       width: 550,
       height: 150,
-      boxShadow: "0px 2px 6px rgba(0, 0, 0, 0.3)",
     },
     secondary: {
-      boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.22)",
+      borderRadius: 9999,
+      width: 550,
+      height: 150,
     },
   },
 
