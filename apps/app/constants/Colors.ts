@@ -12,15 +12,16 @@ const brandColors = {
   accent: "#00cfd4", // Cyan
   purple: "#b474ea", // Light purple
   yellow: "#f7cf4b", // Bright yellow
-  orange: "#eba925", // Orange
-  darkOrange: "#e8981c", // Dark orange
+  lightOrange: "#eba925", // Light orange
+  orange: "#e8981c", // Orange
+  darkOrange: "#a06a3a", // Dark orange
   lightPink: "#e9cfd5", // Light pink
   lightPurple: "#c0abc0", // Light purple gray
   darkPurple: "#4f1f65", // Dark purple
   white: "#ffffff",
   black: "#000000",
 };
-
+// TODO: refactor this into the theme file for better organization and maintainability
 export const Colors = {
   light: {
     text: "#11181C",
@@ -33,21 +34,24 @@ export const Colors = {
     buttons: {
       primary: {
         background: brandColors.yellow,
-        text: brandColors.darkPurple,
-        boxShadow: `6px 6px 6px ${brandColors.darkOrange}ff`,
+        text: brandColors.black,
+        borderBottomWidth: 5,
+        borderRightWidth: 5,
+        borderColor: brandColors.darkOrange,
       },
       secondary: {
         background: brandColors.white,
-        text: brandColors.darkPurple,
-        boxShadow: `6px 6px 6px #C08000FF
-`,
+        text: brandColors.black,
+        borderBottomWidth: 5,
+        borderRightWidth: 5,
+        borderColor: brandColors.darkOrange,
       },
     },
   },
 
   dark: {
     text: "#ECEDEE",
-    background: brandColors.white,
+    background: brandColors.primary,
     tint: tintColorDark,
     icon: "#9BA1A6",
     tabIconDefault: "#9BA1A6",
@@ -55,16 +59,18 @@ export const Colors = {
 
     buttons: {
       primary: {
-        background: brandColors.orange,
-        text: brandColors.white,
-        boxShadow: `3px 3px #C08000FF
-`,
+        background: brandColors.lightOrange,
+        text: brandColors.black,
+        borderBottomWidth: 5,
+        borderRightWidth: 5,
+        borderColor: brandColors.darkOrange,
       },
       secondary: {
         background: brandColors.lightPink,
-        text: brandColors.darkPurple,
-        boxShadow: `3px 3px #C08000FF
-`,
+        text: brandColors.black,
+        borderBottomWidth: 5,
+        borderRightWidth: 5,
+        borderColor: brandColors.darkOrange,
       },
     },
   },
