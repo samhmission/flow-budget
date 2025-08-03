@@ -26,52 +26,78 @@ export function ThemedButton(props: ThemedButtonProps) {
         styles.button,
         {
           backgroundColor: buttonColors.background,
-          boxShadow: buttonColors.boxShadow,
+          borderBottomWidth: buttonColors.borderBottomWidth,
+          borderRightWidth: buttonColors.borderRightWidth,
+          borderColor: buttonColors.borderColor,
         },
         buttonStyles,
       ]}
       {...props}
     >
-      <View style={styles.innerBevelBorder}>
-        <View style={styles.innerBevel} />
-        <Text style={[styles.text, { color: buttonColors.text }]}>
-          {props.title}
-        </Text>
+      <View style={styles.outerBevelBorder}>
+        <View style={styles.bevel}>
+          <View style={styles.innerBevelBorder}>
+            <Text style={[styles.text, { color: buttonColors.text }]}>
+              {props.title}
+            </Text>
+          </View>
+        </View>
       </View>
     </TouchableOpacity>
   );
 }
 
+// TODO: refactor into theme file once the button styles are finalized
 const styles = StyleSheet.create({
   button: {
     justifyContent: "center",
     alignItems: "center",
+    borderRadius: 9999,
+    overflow: "visible",
+    position: "relative",
   },
   text: {
     fontSize: 16,
     fontWeight: "600",
+    zIndex: 3,
   },
-  innerBevelBorder: {
-    left: 0,
+  outerBevelBorder: {
+    position: "absolute",
     height: "90%",
     width: "95%",
     borderLeftWidth: 5,
     borderTopWidth: 5,
-    borderRightWidth: 0, // nothing on the right side
+    borderRightWidth: 0,
     borderBottomWidth: 5,
-    borderColor: "#C08000FF",
+    borderColor: "#e8981c",
     borderRadius: 9999,
     backgroundColor: "transparent",
     justifyContent: "center",
     alignItems: "center",
+    zIndex: 0,
   },
-  innerBevel: {
+  bevel: {
     position: "absolute",
     height: "100%",
     width: "100%",
     borderRadius: 9999,
     borderWidth: 10,
-    borderColor: "#FFD700",
-    boxShadow: `inset -3px -3px  rgba(192, 128, 0, 1)`,
+    borderColor: "#f7cf4b",
+    zIndex: 1,
+  },
+  innerBevelBorder: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    borderRadius: 9999,
+    borderLeftWidth: 0,
+    borderTopWidth: 0,
+    borderRightWidth: 5,
+    borderBottomWidth: 5,
+    borderColor: "#a06a3a",
+    backgroundColor: "transparent",
+    justifyContent: "center",
+    alignItems: "center",
+    zIndex: 2,
   },
 });
