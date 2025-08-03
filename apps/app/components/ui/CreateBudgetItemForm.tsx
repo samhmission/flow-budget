@@ -112,7 +112,6 @@ const CreateBudgetItemForm = () => {
 
         {showInputs && (
           <View style={styles.inputContainerGroup}>
-            {" "}
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Category</Text>
               <TextInput
@@ -215,7 +214,7 @@ const CreateBudgetItemForm = () => {
                 {createMutation.isPending ? (
                   <View style={styles.loadingContainer}>
                     <ActivityIndicator color="#fff" size="small" />
-                    <Text style={styles.submitButtonText}> Creating...</Text>
+                    <Text style={styles.submitButtonText}>Creating...</Text>
                   </View>
                 ) : (
                   <Text style={styles.submitButtonText}>Add Budget Item</Text>

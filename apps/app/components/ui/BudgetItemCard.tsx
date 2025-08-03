@@ -71,7 +71,6 @@ function BudgetItemCard({
         <>
           <Text style={styles.budgetItemText}>{category}</Text>
           <Text style={styles.budgetItemAmount}>${amount.toFixed(2)}</Text>
-
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               onPress={() => setIsEditing(true)}
@@ -100,7 +99,6 @@ function BudgetItemCard({
             keyboardType="decimal-pad"
             style={styles.input}
           />
-
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               onPress={handleUpdate}
