@@ -23,12 +23,12 @@ export default function HomeScreen() {
         <ThemedButton
           variant="primary"
           title="Coins"
-          onPress={() => console.log("Coins button pressed")}
+          onPress={() => navigate("/(tabs)/coins")}
         />
         <ThemedButton
           variant="primary"
           title="Moons"
-          onPress={() => console.log("Moons button pressed")}
+          onPress={() => navigate("/(tabs)/moons")}
         />
         <ThemedButton
           variant="primary"
