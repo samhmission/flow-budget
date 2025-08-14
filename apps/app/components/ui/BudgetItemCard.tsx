@@ -10,6 +10,8 @@ import {
 } from "react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Picker } from "@react-native-picker/picker";
+import type { BudgetItem, RecurrenceInterval } from "@flow-budget/api-types";
+
 function BudgetItemCard({
   item: {
     id,
@@ -23,17 +25,7 @@ function BudgetItemCard({
     updated_at,
   },
 }: {
-  item: {
-    id: string;
-    name: string;
-    category: string;
-    amount: number;
-    description: string;
-    recurring: boolean;
-    recurrence_interval: string;
-    created_at: string;
-    updated_at: string;
-  };
+  item: BudgetItem;
 }) {
   const queryClient = useQueryClient();
   const [showDetails, setShowDetails] = useState(false);
@@ -43,15 +35,8 @@ function BudgetItemCard({
   const [editedAmount, setEditedAmount] = useState(amount.toString());
   const [editedDescription, setEditedDescription] = useState(description || "");
   const [editedRecurring, setEditedRecurring] = useState(recurring || false);
-  const [editedRecurrenceInterval, setEditedRecurrenceInterval] = useState<
-    "weekly" | "monthly" | "yearly" | undefined
-  >(
-    recurrence_interval === "weekly" ||
-      recurrence_interval === "monthly" ||
-      recurrence_interval === "yearly"
-      ? recurrence_interval
-      : undefined
-  );
+  const [editedRecurrenceInterval, setEditedRecurrenceInterval] =
+    useState<RecurrenceInterval | null>(null);
 
   const deleteMutation = useMutation({
     mutationFn: deleteBudgetItem,
@@ -68,7 +53,7 @@ function BudgetItemCard({
       amount: number;
       description: string;
       recurring?: boolean;
-      recurrence_interval?: "weekly" | "monthly" | "yearly" | null;
+      recurrence_interval?: RecurrenceInterval | null;
     }) => updateBudgetItem(data),
     onSuccess: (data) => {
       console.log("Budget item updated successfully:", data);
@@ -170,7 +155,7 @@ function BudgetItemCard({
                 setEditedRecurring(value);
                 // Reset recurrence interval to null when recurring is disabled
                 if (!value) {
-                  setEditedRecurrenceInterval(undefined);
+                  setEditedRecurrenceInterval(null);
                 }
               }}
             />
@@ -295,8 +280,8 @@ async function updateBudgetItem({
   amount: number;
   description: string;
   recurring?: boolean;
-  recurrence_interval?: "weekly" | "monthly" | "yearly" | null;
-}) {
+  recurrence_interval?: RecurrenceInterval | null;
+}): Promise<BudgetItem> {
   const apiURL = Constants.expoConfig.extra.apiUrl;
 
   if (!apiURL) {

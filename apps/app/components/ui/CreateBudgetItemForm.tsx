@@ -9,20 +9,41 @@ import {
   ActivityIndicator,
   KeyboardAvoidingView,
   Platform,
+  Switch,
 } from "react-native";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Constants from "expo-constants";
+import { Picker } from "@react-native-picker/picker";
+import type { BudgetItem, RecurrenceInterval } from "@flow-budget/api-types";
+
+// types
+interface FormErrors {
+  name?: string;
+  category?: string;
+  amount?: string;
+  description?: string;
+  recurrence_interval?: string;
+}
+interface BudgetItemFormData {
+  name: string;
+  category: string;
+  amount: number;
+  description: string;
+  recurring: boolean;
+  recurrence_interval: RecurrenceInterval | null;
+}
 
 const CreateBudgetItemForm = () => {
   const [showInputs, setShowInputs] = useState(false);
+  const [name, setName] = useState("");
   const [category, setCategory] = useState("");
   const [amount, setAmount] = useState("");
   const [description, setDescription] = useState("");
+  const [recurring, setRecurring] = useState(false);
+  const [recurrenceInterval, setRecurrenceInterval] =
+    useState<RecurrenceInterval | null>(null);
   const [isExpense, setIsExpense] = useState(true);
-  const [formErrors, setFormErrors] = useState<{
-    category?: string;
-    amount?: string;
-  }>({});
+  const [formErrors, setFormErrors] = useState<FormErrors>({});
   const queryClient = useQueryClient();
 
   const createMutation = useMutation({
@@ -48,25 +69,91 @@ const CreateBudgetItemForm = () => {
   });
 
   const resetForm = () => {
+    setName("");
     setCategory("");
     setAmount("");
     setDescription("");
+    setRecurring(false);
+    setRecurrenceInterval(null);
     setIsExpense(true);
     setFormErrors({});
   };
 
-  const validateForm = () => {
-    const errors: { category?: string; amount?: string } = {};
+  const validateForm = (): boolean => {
+    const errors: FormErrors = {};
     let isValid = true;
 
-    if (!category.trim()) {
-      errors.category = "Category is required";
+    // Name validation
+    if (!name.trim()) {
+      errors.name = "Name is required";
+      isValid = false;
+    } else if (name.trim().length < 2) {
+      errors.name = "Name must be at least 2 characters";
+      isValid = false;
+    } else if (name.trim().length > 100) {
+      errors.name = "Name cannot exceed 100 characters";
+      isValid = false;
+    } else if (!/^[a-zA-Z0-9\s\-_.,&()]+$/.test(name.trim())) {
+      errors.name = "Name contains invalid characters";
       isValid = false;
     }
 
-    const parsedAmount = parseFloat(amount);
-    if (isNaN(parsedAmount) || parsedAmount <= 0) {
-      errors.amount = "Please enter a valid positive amount";
+    // Category validation
+    if (!category.trim()) {
+      errors.category = "Category is required";
+      isValid = false;
+    } else if (category.trim().length < 2) {
+      errors.category = "Category must be at least 2 characters";
+      isValid = false;
+    } else if (category.trim().length > 50) {
+      errors.category = "Category cannot exceed 50 characters";
+      isValid = false;
+    } else if (!/^[a-zA-Z0-9\s\-_&]+$/.test(category.trim())) {
+      errors.category = "Category contains invalid characters";
+      isValid = false;
+    }
+
+    // Amount validation
+    const amountValue = amount.trim();
+    if (!amountValue) {
+      errors.amount = "Amount is required";
+      isValid = false;
+    } else {
+      const parsedAmount = parseFloat(amountValue);
+      if (isNaN(parsedAmount)) {
+        errors.amount = "Please enter a valid number";
+        isValid = false;
+      } else if (parsedAmount <= 0) {
+        errors.amount = "Amount must be greater than 0";
+        isValid = false;
+      } else if (parsedAmount > 999999.99) {
+        errors.amount = "Amount cannot exceed $999,999.99";
+        isValid = false;
+      } else if (!/^\d+(\.\d{1,2})?$/.test(amountValue)) {
+        errors.amount = "Amount can have maximum 2 decimal places";
+        isValid = false;
+      }
+    }
+
+    // Description validation (with length limit)
+    if (description.trim().length > 500) {
+      errors.description = "Description cannot exceed 500 characters";
+      isValid = false;
+    }
+
+    // Recurrence validation - ensure frequency is selected for recurring items
+    if (recurring && !recurrenceInterval) {
+      errors.recurrence_interval =
+        "Please select a frequency for recurring items";
+      isValid = false;
+    }
+
+    // Validate recurrence interval value if provided
+    if (
+      recurrenceInterval &&
+      !["weekly", "monthly", "yearly"].includes(recurrenceInterval)
+    ) {
+      errors.recurrence_interval = "Invalid frequency selected";
       isValid = false;
     }
 
@@ -74,7 +161,7 @@ const CreateBudgetItemForm = () => {
     return isValid;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (): void => {
     if (!validateForm()) {
       return;
     }
@@ -83,17 +170,18 @@ const CreateBudgetItemForm = () => {
     const parsedAmount = parseFloat(amount);
     const finalAmount = isExpense ? -parsedAmount : parsedAmount;
 
-    console.log("Creating budget item:", {
-      category,
+    const budgetItemData: BudgetItemFormData = {
+      name: name.trim(),
+      category: category.trim(),
       amount: finalAmount,
-      description,
-    });
+      description: description.trim(),
+      recurring,
+      recurrence_interval: recurring ? recurrenceInterval : null,
+    };
 
-    createMutation.mutate({
-      category,
-      amount: finalAmount,
-      description,
-    });
+    console.log("Creating budget item:", budgetItemData);
+
+    createMutation.mutate(budgetItemData);
   };
 
   return (
@@ -112,6 +200,27 @@ const CreateBudgetItemForm = () => {
 
         {showInputs && (
           <View style={styles.inputContainerGroup}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.label}>Name</Text>
+              <TextInput
+                style={[
+                  styles.input,
+                  formErrors.name ? styles.inputError : null,
+                ]}
+                value={name}
+                onChangeText={(text) => {
+                  setName(text);
+                  if (formErrors.name) {
+                    setFormErrors({ ...formErrors, name: undefined });
+                  }
+                }}
+                placeholder="e.g., Groceries, Rent"
+                placeholderTextColor={"#c0abc0"}
+              />
+              {formErrors.name ? (
+                <Text style={styles.errorText}>{formErrors.name}</Text>
+              ) : null}
+            </View>
             <View style={styles.inputContainer}>
               <Text style={styles.label}>Category</Text>
               <TextInput
@@ -156,18 +265,87 @@ const CreateBudgetItemForm = () => {
               ) : null}
             </View>
             <View style={styles.inputContainer}>
-              <Text style={styles.label}>Description (Optional)</Text>
+              <Text style={styles.label}>Description</Text>
               <TextInput
-                style={styles.input}
+                style={[
+                  styles.input,
+                  formErrors.description ? styles.inputError : null,
+                ]}
                 value={description}
-                onChangeText={setDescription}
+                onChangeText={(text) => {
+                  setDescription(text);
+                  if (formErrors.description) {
+                    setFormErrors({ ...formErrors, description: undefined });
+                  }
+                }}
                 placeholder="Add details about this item"
                 placeholderTextColor={"#c0abc0"}
                 multiline={true}
                 numberOfLines={3}
                 textAlignVertical="top"
+                maxLength={500}
+              />
+              <Text style={styles.characterCount}>
+                {description.length}/500 characters
+              </Text>
+              {formErrors.description ? (
+                <Text style={styles.errorText}>{formErrors.description}</Text>
+              ) : null}
+            </View>
+            <View style={styles.switchContainer}>
+              <Text>Recurring:</Text>
+              <Switch
+                value={recurring}
+                onValueChange={(value) => {
+                  setRecurring(value);
+                  // Reset recurrence interval to null when recurring is disabled
+                  if (!value) {
+                    setRecurrenceInterval(null);
+                  }
+                }}
               />
             </View>
+
+            {recurring && (
+              <View style={styles.inputContainer}>
+                <Text style={styles.label}>Frequency:</Text>
+                <View
+                  style={[
+                    styles.pickerContainer,
+                    formErrors.recurrence_interval ? styles.pickerError : null,
+                  ]}
+                >
+                  <Picker
+                    selectedValue={recurrenceInterval}
+                    onValueChange={(value) => {
+                      setRecurrenceInterval(value);
+                      // Clear error when a valid selection is made
+                      if (formErrors.recurrence_interval && value) {
+                        setFormErrors({
+                          ...formErrors,
+                          recurrence_interval: undefined,
+                        });
+                      }
+                    }}
+                    style={styles.picker}
+                  >
+                    <Picker.Item
+                      label="Select frequency..."
+                      value={undefined}
+                      color="#999"
+                    />
+                    <Picker.Item label="Weekly" value="weekly" />
+                    <Picker.Item label="Monthly" value="monthly" />
+                    <Picker.Item label="Yearly" value="yearly" />
+                  </Picker>
+                </View>
+                {formErrors.recurrence_interval ? (
+                  <Text style={styles.errorText}>
+                    {formErrors.recurrence_interval}
+                  </Text>
+                ) : null}
+              </View>
+            )}
             <View style={styles.typeContainer}>
               <TouchableOpacity
                 style={[
@@ -228,32 +406,14 @@ const CreateBudgetItemForm = () => {
   );
 };
 
-async function createBudgetItem({
-  category,
-  amount,
-  description,
-}: {
-  category: string;
-  amount: number;
-  description: string;
-}): Promise<{
-  id: string;
-  category: string;
-  amount: number;
-  description: string;
-  created_at: string;
-}> {
+async function createBudgetItem(data: BudgetItemFormData): Promise<BudgetItem> {
   const apiURL = Constants.expoConfig?.extra?.apiUrl;
 
   if (!apiURL) {
     throw new Error("API URL is not defined in environment variables");
   }
 
-  console.log(`Sending create request to ${apiURL}/budgetItem`, {
-    category,
-    amount,
-    description,
-  });
+  console.log(`Sending create request to ${apiURL}/budgetItem`, data);
 
   try {
     const response = await fetch(`${apiURL}/budgetItem`, {
@@ -261,11 +421,7 @@ async function createBudgetItem({
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({
-        category,
-        amount,
-        description,
-      }),
+      body: JSON.stringify(data),
     });
 
     if (!response.ok) {
@@ -276,7 +432,8 @@ async function createBudgetItem({
       );
     }
 
-    return response.json();
+    const result = await response.json();
+    return result;
   } catch (error) {
     console.error("Error creating budget item:", error);
     throw error;
@@ -389,6 +546,32 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
+  },
+  switchContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginVertical: 8,
+  },
+  pickerContainer: {
+    borderWidth: 1,
+    borderColor: "#CCCCCC",
+    borderRadius: 8,
+    overflow: "hidden",
+    marginVertical: 8,
+  },
+  picker: {
+    height: 50,
+    width: "100%",
+  },
+  pickerError: {
+    borderColor: "#FF5252",
+    borderWidth: 2,
+  },
+  characterCount: {
+    fontSize: 12,
+    color: "#666",
+    textAlign: "right",
+    marginTop: 4,
   },
 });
 
