@@ -18,7 +18,7 @@ function BudgetItemList() {
   return (
     <ScrollView style={styles.container}>
       {budgetItems.map((item) => (
-        <BudgetItemCard key={item.id} item={item} />
+        <BudgetItemCard key={item.id} item={item as Required<BudgetItem>} />
       ))}
     </ScrollView>
   );
