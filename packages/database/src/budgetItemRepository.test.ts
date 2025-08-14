@@ -208,6 +208,31 @@ describe("BudgetItemRepository", () => {
     }
   });
 
+  it("should validate BudgetItemsDelete type usage", async () => {
+    const testId = randomUUID();
+    const testItem: NewBudgetItem = {
+      id: testId,
+      name: "Type Validation Test",
+      category: "Test",
+      amount: 50,
+      description: "Test for BudgetItemsDelete type",
+    };
+
+    await BudgetItemRepository.createBudgetItem(testItem);
+
+    // Test that BudgetItemsDelete type is properly used
+    const deleteParams: BudgetItemsDelete = { id: testId };
+    const result = await BudgetItemRepository.deleteBudgetItem(deleteParams);
+
+    expect(result).toBeDefined();
+    expect(result?.id).toBe(testId);
+    expect(result?.name).toBe("Type Validation Test");
+
+    // Verify it's actually deleted
+    const deleted = await BudgetItemRepository.findBudgetItemById(testId);
+    expect(deleted).toBeUndefined();
+  });
+
   it("should store amount as a decimal", async () => {
     const testItem: NewBudgetItem = {
       id: randomUUID(),
