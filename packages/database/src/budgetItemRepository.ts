@@ -4,6 +4,7 @@ import {
   BudgetItem,
   NewBudgetItem,
   BudgetItemFilters,
+  BudgetItemsDelete,
 } from "./types.js";
 
 export async function findBudgetItemById(id: string) {
@@ -37,9 +38,18 @@ export async function updateBudgetItem(
   id: string,
   updateWith: BudgetItemUpdate
 ) {
+  // Handle undefined values properly for Kysely - convert undefined to null for nullable fields
+  const updateData = { ...updateWith };
+  if (
+    "recurrence_interval" in updateWith &&
+    updateWith.recurrence_interval === undefined
+  ) {
+    updateData.recurrence_interval = null;
+  }
+
   await db
     .updateTable("budgetItems")
-    .set(updateWith)
+    .set(updateData)
     .where("id", "=", id)
     .execute();
 }
@@ -52,10 +62,10 @@ export async function createBudgetItem(budgetItem: NewBudgetItem) {
     .executeTakeFirstOrThrow();
 }
 
-export async function deleteBudgetItem(id: string) {
+export async function deleteBudgetItem(deleteParams: BudgetItemsDelete) {
   return await db
     .deleteFrom("budgetItems")
-    .where("id", "=", id)
+    .where("id", "=", deleteParams.id)
     .returningAll()
     .executeTakeFirst();
 }
