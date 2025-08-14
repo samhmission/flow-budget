@@ -68,7 +68,7 @@ function BudgetItemCard({
       amount: number;
       description: string;
       recurring?: boolean;
-      recurrence_interval?: "weekly" | "monthly" | "yearly";
+      recurrence_interval?: "weekly" | "monthly" | "yearly" | null;
     }) => updateBudgetItem(data),
     onSuccess: (data) => {
       console.log("Budget item updated successfully:", data);
@@ -86,6 +86,7 @@ function BudgetItemCard({
     },
   });
 
+  // TODO: Add error handling for invalid inputs
   const handleUpdate = () => {
     // Ensure amount is a valid number
     const parsedAmount = parseFloat(editedAmount);
@@ -95,12 +96,19 @@ function BudgetItemCard({
     }
 
     // Type-safe recurrence interval validation
-    const validRecurrenceInterval =
-      editedRecurrenceInterval === "weekly" ||
-      editedRecurrenceInterval === "monthly" ||
-      editedRecurrenceInterval === "yearly"
+    // If recurring is false, set recurrence_interval to null
+    const validRecurrenceInterval = editedRecurring
+      ? editedRecurrenceInterval === "weekly" ||
+        editedRecurrenceInterval === "monthly" ||
+        editedRecurrenceInterval === "yearly"
         ? editedRecurrenceInterval
-        : undefined;
+        : null
+      : null;
+
+    if (editedRecurring && !editedRecurrenceInterval) {
+      console.error("Please select a frequency for recurring items");
+      throw new Error("Frequency must be selected for recurring items");
+    }
 
     console.log("Updating budget item:", {
       id,
@@ -158,7 +166,13 @@ function BudgetItemCard({
             <Text>Recurring:</Text>
             <Switch
               value={editedRecurring}
-              onValueChange={setEditedRecurring}
+              onValueChange={(value) => {
+                setEditedRecurring(value);
+                // Reset recurrence interval to null when recurring is disabled
+                if (!value) {
+                  setEditedRecurrenceInterval(undefined);
+                }
+              }}
             />
           </View>
 
@@ -192,6 +206,7 @@ function BudgetItemCard({
         </View>
       ) : (
         <>
+          {/* TODO: re-evaluate the structure */}
           {/* Main Budget Item Content */}
           <TouchableOpacity
             onPress={() => setShowDetails((prev: boolean) => !prev)}
@@ -224,6 +239,7 @@ function BudgetItemCard({
               style={styles.itemDetailsContainer}
               activeOpacity={0.7}
             >
+              <Text style={styles.itemDetailsText}>Name: {name}</Text>
               <Text style={styles.itemDetailsText}>{description}</Text>
               <Text style={styles.itemDetailsText}>
                 Recurring:
@@ -279,7 +295,7 @@ async function updateBudgetItem({
   amount: number;
   description: string;
   recurring?: boolean;
-  recurrence_interval?: "weekly" | "monthly" | "yearly";
+  recurrence_interval?: "weekly" | "monthly" | "yearly" | null;
 }) {
   const apiURL = Constants.expoConfig.extra.apiUrl;
 
@@ -288,8 +304,12 @@ async function updateBudgetItem({
   }
 
   console.log(`Sending update to ${apiURL}/budgetItem/${id}`, {
+    name,
     category,
     amount,
+    description,
+    recurring,
+    recurrence_interval,
   });
 
   try {
