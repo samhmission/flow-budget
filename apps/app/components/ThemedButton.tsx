@@ -20,6 +20,9 @@ export function ThemedButton(props: ThemedButtonProps) {
   const buttonColors = Colors[theme].buttons[variant];
   const buttonStyles = Theme.buttons[variant];
 
+  // Destructure to separate style and other props
+  const { style, variant: _, title, ...restProps } = props;
+
   return (
     <TouchableOpacity
       style={[
@@ -31,14 +34,15 @@ export function ThemedButton(props: ThemedButtonProps) {
           borderColor: buttonColors.borderColor,
         },
         buttonStyles,
+        style,
       ]}
-      {...props}
+      {...restProps}
     >
       <View style={styles.outerBevelBorder}>
         <View style={styles.bevel}>
           <View style={styles.innerBevelBorder}>
             <Text style={[styles.text, { color: buttonColors.text }]}>
-              {props.title}
+              {title}
             </Text>
           </View>
         </View>
