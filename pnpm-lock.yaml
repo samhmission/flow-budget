@@ -156,9 +156,6 @@ importers:
 
   packages/database:
     dependencies:
-      kysely:
-        specifier: ^0.28.3
-        version: 0.28.3
       pg:
         specifier: ^8.16.0
         version: 8.16.0
@@ -172,9 +169,12 @@ importers:
       '@types/pg':
         specifier: ^8.15.4
         version: 8.15.4
+      kysely:
+        specifier: ^0.28.5
+        version: 0.28.5
       kysely-ctl:
         specifier: ^0.14.0
-        version: 0.14.0(kysely@0.28.3)
+        version: 0.14.0(kysely@0.28.5)
       tsx:
         specifier: ^4.19.4
         version: 4.19.4
@@ -3503,8 +3503,8 @@ packages:
       kysely-postgres-js:
         optional: true
 
-  kysely@0.28.3:
-    resolution: {integrity: sha512-svKnkSH72APRdjfVCCOknxaC9Eb3nA2StHG9d5/sKOqRvHRp2Dtf1XwDvc92b4B5v6LV+EAGWXQbZ5jMOvHaDw==}
+  kysely@0.28.5:
+    resolution: {integrity: sha512-rlB0I/c6FBDWPcQoDtkxi9zIvpmnV5xoIalfCMSMCa7nuA6VGA3F54TW9mEgX4DVf10sXAWCF5fDbamI/5ZpKA==}
     engines: {node: '>=20.0.0'}
 
   lan-network@0.1.7:
@@ -9398,13 +9398,13 @@ snapshots:
 
   kleur@3.0.3: {}
 
-  kysely-ctl@0.14.0(kysely@0.28.3):
+  kysely-ctl@0.14.0(kysely@0.28.5):
     dependencies:
       c12: 3.1.0
       citty: 0.1.6
       consola: 3.4.2
       jiti: 2.4.2
-      kysely: 0.28.3
+      kysely: 0.28.5
       nypm: 0.6.0
       ofetch: 1.4.1
       pathe: 2.0.3
@@ -9413,7 +9413,7 @@ snapshots:
     transitivePeerDependencies:
       - magicast
 
-  kysely@0.28.3: {}
+  kysely@0.28.5: {}
 
   lan-network@0.1.7: {}
 
