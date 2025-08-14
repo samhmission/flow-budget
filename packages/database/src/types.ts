@@ -19,7 +19,7 @@ export interface BudgetItemsTable {
   amount: number;
   description?: string;
   recurring?: boolean;
-  recurrence_interval?: "weekly" | "monthly" | "yearly";
+  recurrence_interval?: "weekly" | "monthly" | "yearly" | null;
   created_at: ColumnType<Date, string | undefined, never>;
   updated_at: ColumnType<Date, string | undefined, string | undefined>;
 }

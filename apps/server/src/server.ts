@@ -74,10 +74,21 @@ app.put(
   express.json(),
   async (req: express.Request, res: express.Response) => {
     const id = req.params.id;
-    const { category, amount } = req.body;
-    console.log(`Received request to update budget item with ID: ${id}`, {
+    const {
+      name,
       category,
       amount,
+      description,
+      recurring,
+      recurrence_interval,
+    } = req.body;
+    console.log(`Received request to update budget item with ID: ${id}`, {
+      name,
+      category,
+      amount,
+      description,
+      recurring,
+      recurrence_interval,
     });
 
     if (!id) {
@@ -86,7 +97,14 @@ app.put(
     }
 
     try {
-      await updateBudgetItem(id, { category, amount });
+      await updateBudgetItem(id, {
+        name,
+        category,
+        amount,
+        description,
+        recurring,
+        recurrence_interval,
+      });
       res.status(200).json({
         message: "Budget item updated successfully",
         id,
