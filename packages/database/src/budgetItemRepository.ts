@@ -19,7 +19,7 @@ export async function findBudgetItem(criteria: BudgetItemFilters) {
   let query = db.selectFrom("budgetItems");
 
   if (criteria.id) {
-    query = query.where("id", "=", criteria.id); // Kysely is immutable, you must re-assign!
+    query = query.where("id", "=", criteria.id);
   }
 
   if (criteria.category) {
